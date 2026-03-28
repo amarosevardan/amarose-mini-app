@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AMAROSE LIFESTYLE</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
     body {
-      background: linear-gradient(180deg, #ffd8ea 0%, #fff7fb 55%, #fff 100%);
+      background: linear-gradient(180deg, #ffd8ea 0%, #fff7fb 55%, #ffffff 100%);
       color: #4a3340;
       min-height: 100vh;
     }
@@ -17,51 +17,48 @@
       margin: 0 auto;
       padding: 16px 16px 100px;
     }
-    .top-row {
+    .top {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      gap: 10px;
+      gap: 8px;
       margin-bottom: 14px;
     }
-    .top-badge {
-      display: inline-block;
-      background: rgba(255,255,255,0.85);
+    .badge {
+      flex: 1;
+      background: rgba(255,255,255,0.9);
       border: 1px solid #f3c4d7;
       color: #c26e93;
-      padding: 8px 14px;
+      padding: 8px 12px;
       border-radius: 999px;
       font-size: 11px;
-      letter-spacing: .18em;
+      letter-spacing: .15em;
       text-align: center;
-      flex: 1;
     }
-    .lang-switch {
+    .langs {
       display: flex;
       gap: 6px;
     }
-    .lang-btn {
+    .langs button {
       border: 1px solid #efbfd0;
-      background: rgba(255,255,255,0.92);
+      background: #fff;
       color: #b95a81;
       border-radius: 12px;
       padding: 8px 10px;
       font-size: 12px;
       font-weight: 700;
-      cursor: pointer;
     }
-    .lang-btn.active {
+    .langs button.active {
       background: #d76a95;
-      color: white;
+      color: #fff;
       border-color: #d76a95;
     }
     .brand {
       text-align: center;
-      padding: 10px 0 18px;
+      margin: 8px 0 18px;
     }
     .brand h1 {
       font-family: Georgia, serif;
-      font-size: 46px;
+      font-size: 42px;
       color: #b68646;
       font-weight: 500;
       letter-spacing: 2px;
@@ -71,18 +68,20 @@
       font-size: 14px;
       margin-top: 6px;
     }
-    .hero {
-      background: rgba(255,255,255,0.92);
+    .hero, .card, .footer-box, .cat {
+      background: rgba(255,255,255,0.95);
       border: 1px solid #f2c6d8;
+      box-shadow: 0 8px 22px rgba(213,110,151,0.10);
+    }
+    .hero {
       border-radius: 28px;
       padding: 18px;
-      box-shadow: 0 12px 30px rgba(213, 110, 151, 0.12);
     }
-    .hero-head {
+    .hero-top {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       gap: 12px;
+      align-items: center;
     }
     .hero small {
       color: #d06d96;
@@ -95,7 +94,7 @@
       line-height: 1.15;
       margin-top: 8px;
     }
-    .rose-box {
+    .rose {
       width: 58px;
       height: 58px;
       border-radius: 18px;
@@ -104,7 +103,6 @@
       align-items: center;
       justify-content: center;
       font-size: 28px;
-      flex-shrink: 0;
     }
     .hero-text {
       margin-top: 10px;
@@ -120,7 +118,6 @@
       font-size: 16px;
       font-weight: 700;
       margin-top: 14px;
-      cursor: pointer;
     }
     .btn-primary {
       background: linear-gradient(90deg, #d76a95, #e78eb3);
@@ -140,26 +137,376 @@
       align-items: center;
       margin-bottom: 12px;
     }
-    .section-head h3 {
-      font-size: 20px;
-    }
-    .section-head span {
-      color: #d06d96;
-      font-size: 14px;
-    }
+    .section-head h3 { font-size: 20px; }
+    .section-head span { color: #d06d96; font-size: 14px; }
     .grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
     }
     .cat {
-      background: rgba(255,255,255,0.94);
-      border: 1px solid #f2c6d8;
       border-radius: 20px;
       padding: 14px 8px;
       text-align: center;
-      box-shadow: 0 6px 16px rgba(215, 119, 156, 0.08);
     }
     .cat .emoji {
       font-size: 24px;
-      margin-bottom
+      margin-bottom: 8px;
+    }
+    .cat .name {
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .card {
+      border-radius: 24px;
+      overflow: hidden;
+    }
+    .product-image {
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 52px;
+      background: linear-gradient(180deg, #ffe7f1, #fffafb);
+    }
+    .card-body {
+      padding: 14px;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+    .title {
+      font-size: 17px;
+      font-weight: 700;
+    }
+    .sub {
+      color: #7b6a70;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+    .price {
+      color: #c15e86;
+      font-weight: 700;
+      font-size: 18px;
+      white-space: nowrap;
+    }
+    .footer-box {
+      margin-top: 24px;
+      border-radius: 24px;
+      padding: 16px;
+      text-align: center;
+    }
+    .footer-box h4 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    .footer-box p {
+      color: #7a6670;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.97);
+      border-top: 1px solid #f0c4d3;
+    }
+    .bottom-nav-inner {
+      max-width: 480px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      text-align: center;
+      padding: 10px 6px 12px;
+      font-size: 12px;
+      color: #6d5d63;
+    }
+    .nav-item.active {
+      color: #d06d96;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top">
+      <div class="badge">AMAROSE LIFESTYLE</div>
+      <div class="langs">
+        <button class="active" onclick="setLang('en', this)">EN</button>
+        <button onclick="setLang('ru', this)">RU</button>
+        <button onclick="setLang('hy', this)">HY</button>
+      </div>
+    </div>
+
+    <div class="brand">
+      <h1>AMAROSE</h1>
+      <p id="brandSub">Soft luxury boutique inside Telegram</p>
+    </div>
+
+    <div class="hero">
+      <div class="hero-top">
+        <div>
+          <small id="welcome">Welcome</small>
+          <h2 id="heroTitle">Discover your soft luxury</h2>
+        </div>
+        <div class="rose">🌹</div>
+      </div>
+      <div class="hero-text" id="heroText">
+        Elegant beauty, fashion, gifts, and everyday essentials in one refined boutique.
+      </div>
+      <button class="btn btn-primary" id="catalogBtn" onclick="scrollToFeatured()">Open Catalog</button>
+      <button class="btn btn-soft" id="orderBtn" onclick="openSupport()">Order via Telegram</button>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <h3 id="categoriesTitle">Categories</h3>
+        <span id="viewAll">View all</span>
+      </div>
+      <div class="grid">
+        <div class="cat"><div class="emoji">💄</div><div class="name" id="cat1">Beauty</div></div>
+        <div class="cat"><div class="emoji">👗</div><div class="name" id="cat2">Fashion</div></div>
+        <div class="cat"><div class="emoji">🎁</div><div class="name" id="cat3">Gifts</div></div>
+        <div class="cat"><div class="emoji">👜</div><div class="name" id="cat4">Bags</div></div>
+        <div class="cat"><div class="emoji">🏡</div><div class="name" id="cat5">Home</div></div>
+        <div class="cat"><div class="emoji">🌸</div><div class="name" id="cat6">Self Care</div></div>
+      </div>
+    </div>
+
+    <div class="section" id="featured">
+      <div class="section-head">
+        <h3 id="featuredTitle">Featured</h3>
+        <span id="today">Today</span>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <div class="product-image">🌹</div>
+          <div class="card-body">
+            <div class="row">
+              <div>
+                <div class="title" id="p1Title">Rose Glow Set</div>
+                <div class="sub" id="pSub1">AMAROSE selection</div>
+              </div>
+              <div class="price">$29</div>
+            </div>
+            <button class="btn btn-soft" id="buy1" onclick="orderItem(current.p1Title)">Order now</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="product-image">👜</div>
+          <div class="card-body">
+            <div class="row">
+              <div>
+                <div class="title" id="p2Title">Pink Elegance Bag</div>
+                <div class="sub" id="pSub2">AMAROSE selection</div>
+              </div>
+              <div class="price">$59</div>
+            </div>
+            <button class="btn btn-soft" id="buy2" onclick="orderItem(current.p2Title)">Order now</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="product-image">🎁</div>
+          <div class="card-body">
+            <div class="row">
+              <div>
+                <div class="title" id="p3Title">Luxury Gift Box</div>
+                <div class="sub" id="pSub3">AMAROSE selection</div>
+              </div>
+              <div class="price">$39</div>
+            </div>
+            <button class="btn btn-soft" id="buy3" onclick="orderItem(current.p3Title)">Order now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-box">
+      <h4 id="footerTitle">Need personal help?</h4>
+      <p id="footerText">Contact AMAROSE directly in Telegram for orders, questions, and custom requests.</p>
+      <button class="btn btn-primary" id="footerBtn" onclick="openSupport()">Contact AMAROSE</button>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="bottom-nav-inner">
+      <div class="nav-item active">🏠 <div id="nav1">Home</div></div>
+      <div class="nav-item">🛍️ <div id="nav2">Shop</div></div>
+      <div class="nav-item">🛒 <div id="nav3">Cart</div></div>
+      <div class="nav-item">💬 <div id="nav4">Support</div></div>
+    </div>
+  </div>
+
+  <script>
+    const dictionary = {
+      en: {
+        brandSub: "Soft luxury boutique inside Telegram",
+        welcome: "Welcome",
+        heroTitle: "Discover your soft luxury",
+        heroText: "Elegant beauty, fashion, gifts, and everyday essentials in one refined boutique.",
+        catalogBtn: "Open Catalog",
+        orderBtn: "Order via Telegram",
+        categoriesTitle: "Categories",
+        viewAll: "View all",
+        cat1: "Beauty",
+        cat2: "Fashion",
+        cat3: "Gifts",
+        cat4: "Bags",
+        cat5: "Home",
+        cat6: "Self Care",
+        featuredTitle: "Featured",
+        today: "Today",
+        p1Title: "Rose Glow Set",
+        p2Title: "Pink Elegance Bag",
+        p3Title: "Luxury Gift Box",
+        pSub: "AMAROSE selection",
+        buy: "Order now",
+        footerTitle: "Need personal help?",
+        footerText: "Contact AMAROSE directly in Telegram for orders, questions, and custom requests.",
+        footerBtn: "Contact AMAROSE",
+        nav1: "Home",
+        nav2: "Shop",
+        nav3: "Cart",
+        nav4: "Support"
+      },
+      ru: {
+        brandSub: "Бутик мягкой роскоши внутри Telegram",
+        welcome: "Добро пожаловать",
+        heroTitle: "Открой свою мягкую роскошь",
+        heroText: "Элегантная красота, мода, подарки и стильные товары на каждый день в одном изысканном бутике.",
+        catalogBtn: "Открыть каталог",
+        orderBtn: "Заказать через Telegram",
+        categoriesTitle: "Категории",
+        viewAll: "Смотреть всё",
+        cat1: "Красота",
+        cat2: "Мода",
+        cat3: "Подарки",
+        cat4: "Сумки",
+        cat5: "Дом",
+        cat6: "Уход",
+        featuredTitle: "Избранное",
+        today: "Сегодня",
+        p1Title: "Набор Rose Glow",
+        p2Title: "Сумка Pink Elegance",
+        p3Title: "Подарочный Luxury Box",
+        pSub: "Выбор AMAROSE",
+        buy: "Заказать",
+        footerTitle: "Нужна личная помощь?",
+        footerText: "Свяжитесь с AMAROSE напрямую в Telegram для заказов, вопросов и индивидуальных запросов.",
+        footerBtn: "Связаться с AMAROSE",
+        nav1: "Главная",
+        nav2: "Магазин",
+        nav3: "Корзина",
+        nav4: "Поддержка"
+      },
+      hy: {
+        brandSub: "Փափուկ շքեղության բուտիկ Telegram-ի ներսում",
+        welcome: "Բարի գալուստ",
+        heroTitle: "Բացահայտիր քո նուրբ շքեղությունը",
+        heroText: "Էլեգանտ գեղեցկություն, նորաձևություն, նվերներ և ամենօրյա նրբագեղ ապրանքներ մեկ գեղեցիկ բուտիկում։",
+        catalogBtn: "Բացել կատալոգը",
+        orderBtn: "Պատվիրել Telegram-ով",
+        categoriesTitle: "Բաժիններ",
+        viewAll: "Տեսնել բոլորը",
+        cat1: "Գեղեցկություն",
+        cat2: "Նորաձևություն",
+        cat3: "Նվերներ",
+        cat4: "Պայուսակներ",
+        cat5: "Տուն",
+        cat6: "Խնամք",
+        featuredTitle: "Ընտրված",
+        today: "Այսօր",
+        p1Title: "Rose Glow հավաքածու",
+        p2Title: "Pink Elegance պայուսակ",
+        p3Title: "Luxury Gift Box",
+        pSub: "AMAROSE ընտրանի",
+        buy: "Պատվիրել",
+        footerTitle: "Օգնությո՞ւն է պետք",
+        footerText: "Կապվիր AMAROSE-ի հետ Telegram-ում պատվերների, հարցերի և անհատական ցանկությունների համար։",
+        footerBtn: "Կապվել AMAROSE-ի հետ",
+        nav1: "Գլխավոր",
+        nav2: "Խանութ",
+        nav3: "Զամբյուղ",
+        nav4: "Աջակցություն"
+      }
+    };
+
+    let current = dictionary.en;
+
+    function applyLang(lang) {
+      current = dictionary[lang];
+      document.getElementById("brandSub").innerText = current.brandSub;
+      document.getElementById("welcome").innerText = current.welcome;
+      document.getElementById("heroTitle").innerText = current.heroTitle;
+      document.getElementById("heroText").innerText = current.heroText;
+      document.getElementById("catalogBtn").innerText = current.catalogBtn;
+      document.getElementById("orderBtn").innerText = current.orderBtn;
+      document.getElementById("categoriesTitle").innerText = current.categoriesTitle;
+      document.getElementById("viewAll").innerText = current.viewAll;
+      document.getElementById("cat1").innerText = current.cat1;
+      document.getElementById("cat2").innerText = current.cat2;
+      document.getElementById("cat3").innerText = current.cat3;
+      document.getElementById("cat4").innerText = current.cat4;
+      document.getElementById("cat5").innerText = current.cat5;
+      document.getElementById("cat6").innerText = current.cat6;
+      document.getElementById("featuredTitle").innerText = current.featuredTitle;
+      document.getElementById("today").innerText = current.today;
+      document.getElementById("p1Title").innerText = current.p1Title;
+      document.getElementById("p2Title").innerText = current.p2Title;
+      document.getElementById("p3Title").innerText = current.p3Title;
+      document.getElementById("pSub1").innerText = current.pSub;
+      document.getElementById("pSub2").innerText = current.pSub;
+      document.getElementById("pSub3").innerText = current.pSub;
+      document.getElementById("buy1").innerText = current.buy;
+      document.getElementById("buy2").innerText = current.buy;
+      document.getElementById("buy3").innerText = current.buy;
+      document.getElementById("footerTitle").innerText = current.footerTitle;
+      document.getElementById("footerText").innerText = current.footerText;
+      document.getElementById("footerBtn").innerText = current.footerBtn;
+      document.getElementById("nav1").innerText = current.nav1;
+      document.getElementById("nav2").innerText = current.nav2;
+      document.getElementById("nav3").innerText = current.nav3;
+      document.getElementById("nav4").innerText = current.nav4;
+    }
+
+    function setLang(lang, btn) {
+      document.querySelectorAll(".langs button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      applyLang(lang);
+    }
+
+    function scrollToFeatured() {
+      document.getElementById("featured").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function openSupport() {
+      window.open("https://t.me/amaroselifestyle_bot", "_blank");
+    }
+
+    function orderItem(item) {
+      const text = encodeURIComponent("Hello AMAROSE, I want to order: " + item);
+      window.open("https://t.me/amaroselifestyle_bot?text=" + text, "_blank");
+    }
+
+    applyLang("en");
+
+    if (window.Telegram && window.Telegram.WebApp) {
+      window.Telegram.WebApp.ready();
+      window.Telegram.WebApp.expand();
+    }
+  </script>
+</body>
+  </html>
