@@ -1,860 +1,210 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AMAROSE OWNER PANEL</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <title>AMAROSE Client Starter v3</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-    body {
-      background: linear-gradient(180deg, #ffd8ea 0%, #fff7fb 55%, #ffffff 100%);
-      color: #4a3340;
-      min-height: 100vh;
+    :root{
+      --brand:#7e173b; --brand2:#a42f5b; --gold:#b8893d;
+      --line:#ead7dd; --text:#24181d; --muted:#7d6771;
+      --shadow:0 10px 24px rgba(80,20,40,.08);
     }
-    .app {
-      max-width: 480px;
-      margin: 0 auto;
-      padding: 16px 16px 96px;
-    }
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-    .brand-badge {
-      flex: 1;
-      background: rgba(255,255,255,.92);
-      border: 1px solid #f1bfd2;
-      border-radius: 999px;
-      padding: 10px 14px;
-      text-align: center;
-      color: #c06b90;
-      font-size: 11px;
-      letter-spacing: .18em;
-    }
-    .lang-switch {
-      display: flex;
-      gap: 6px;
-    }
-    .lang-switch button {
-      border: 1px solid #efbfd0;
-      background: #fff;
-      color: #b95a81;
-      border-radius: 12px;
-      padding: 8px 10px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .lang-switch button.active {
-      background: #d76a95;
-      color: #fff;
-      border-color: #d76a95;
-    }
-    .logo-block {
-      text-align: center;
-      margin: 8px 0 18px;
-    }
-    .logo-block h1 {
-      font-family: Georgia, serif;
-      font-size: 42px;
-      color: #b68646;
-      font-weight: 500;
-      letter-spacing: 2px;
-    }
-    .logo-block p {
-      color: #7d6670;
-      font-size: 14px;
-      margin-top: 6px;
-    }
-    .card {
-      background: rgba(255,255,255,.95);
-      border: 1px solid #f2c6d8;
-      border-radius: 24px;
-      padding: 16px;
-      box-shadow: 0 8px 22px rgba(213,110,151,.10);
-    }
-    .hero-title {
-      font-size: 30px;
-      font-weight: 800;
-      line-height: 1.1;
-      margin-top: 6px;
-    }
-    .muted {
-      color: #7a6670;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-    .pill {
-      display: inline-block;
-      color: #cf7299;
-      text-transform: uppercase;
-      letter-spacing: .18em;
-      font-size: 11px;
-      margin-bottom: 8px;
-    }
-    .btn {
-      width: 100%;
-      border: 0;
-      border-radius: 18px;
-      padding: 14px;
-      font-size: 16px;
-      font-weight: 700;
-      margin-top: 12px;
-      cursor: pointer;
-    }
-    .btn-primary {
-      background: linear-gradient(90deg, #d76a95, #e78eb3);
-      color: white;
-    }
-    .btn-soft {
-      background: #fff8fb;
-      color: #c05d85;
-      border: 1px solid #efbfd0;
-    }
-    .section {
-      margin-top: 24px;
-    }
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-    .section-head h3 {
-      font-size: 22px;
-    }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-    .tile {
-      background: rgba(255,255,255,.95);
-      border: 1px solid #f2c6d8;
-      border-radius: 20px;
-      padding: 14px 10px;
-      text-align: center;
-      box-shadow: 0 6px 16px rgba(215,119,156,.08);
-    }
-    .tile .emoji {
-      font-size: 24px;
-      margin-bottom: 8px;
-    }
-    .tile .name {
-      font-size: 13px;
-      font-weight: 700;
-    }
-    .product-list {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .product-card {
-      background: rgba(255,255,255,.97);
-      border: 1px solid #f2c6d8;
-      border-radius: 24px;
-      overflow: hidden;
-    }
-    .product-image {
-      height: 150px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 56px;
-      background: linear-gradient(180deg, #ffe7f1, #fffafb);
-    }
-    .product-body {
-      padding: 14px;
-    }
-    .row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-    .title {
-      font-size: 18px;
-      font-weight: 800;
-    }
-    .sub {
-      color: #7b6a70;
-      font-size: 13px;
-      margin-top: 4px;
-    }
-    .price {
-      color: #c15e86;
-      font-weight: 800;
-      font-size: 20px;
-      white-space: nowrap;
-    }
-    .panel-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .panel-item {
-      background: rgba(255,255,255,.96);
-      border: 1px solid #f2c6d8;
-      border-radius: 20px;
-      padding: 14px;
-    }
-    .panel-item h4 {
-      font-size: 17px;
-      margin-bottom: 6px;
-    }
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-    .stat-box {
-      background: rgba(255,255,255,.96);
-      border: 1px solid #f2c6d8;
-      border-radius: 20px;
-      padding: 16px;
-      text-align: center;
-    }
-    .stat-box .num {
-      font-size: 28px;
-      font-weight: 800;
-      color: #c15e86;
-    }
-    .hidden {
-      display: none !important;
-    }
-    .bottom-nav {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(255,255,255,.98);
-      border-top: 1px solid #f0c4d3;
-      backdrop-filter: blur(8px);
-    }
-    .bottom-nav-inner {
-      max-width: 480px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      text-align: center;
-      padding: 10px 4px 12px;
-      font-size: 12px;
-      color: #6d5d63;
-    }
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      align-items: center;
-      cursor: pointer;
-    }
-    .nav-item.active {
-      color: #d06d96;
-      font-weight: 800;
-    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#fff8fa 0%,#f8f4f5 50%,#f6f1f2 100%);color:var(--text)}
+    .app{max-width:480px;margin:0 auto;min-height:100vh;padding:14px 14px 96px}
+    .hidden{display:none!important}
+    .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}
+    .brand{font-family:Georgia,serif;font-size:30px;color:var(--gold)}
+    .sub{font-size:11px;font-weight:800;color:var(--brand);letter-spacing:.18em;text-transform:uppercase;margin-top:3px}
+    .version{font-size:10px;font-weight:800;color:#7e173b;letter-spacing:.18em;margin-top:4px}
+    .langs{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .lang{border:1px solid var(--line);background:#fff;border-radius:14px;padding:8px 10px;font-weight:800;font-size:12px;cursor:pointer}
+    .lang.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+    .hero{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-radius:26px;padding:18px;box-shadow:0 14px 30px rgba(95,20,48,.22);margin-bottom:14px}
+    .hero h1{font-size:28px;line-height:1.08;margin:4px 0 8px}
+    .hero p{margin:0;color:rgba(255,255,255,.86)}
+    .card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:var(--shadow)}
+    .label{display:block;font-size:13px;font-weight:800;color:#6e5963;margin-bottom:7px}
+    .row{display:flex;gap:10px;align-items:center}
+    .countryBtn{min-width:170px;border:1px solid var(--line);background:#fff;border-radius:18px;padding:14px 12px;font-size:16px;text-align:left;cursor:pointer;box-shadow:var(--shadow)}
+    input{width:100%;border:1px solid var(--line);background:#fff;border-radius:18px;padding:14px;font-size:16px;color:var(--text);outline:none}
+    .btn{width:100%;border:0;border-radius:18px;padding:14px 16px;background:linear-gradient(90deg,var(--brand),var(--brand2));color:#fff;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 10px 20px rgba(126,23,59,.20);margin-top:14px}
+    .btn.soft{background:#fff8fb;color:var(--brand);border:1px solid var(--line)}
+    .otp{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+    .otp div{border:1px solid var(--line);border-radius:16px;background:#fff;text-align:center;padding:16px 0;font-size:28px;font-weight:900;color:var(--text)}
+    .info{margin-top:14px;color:var(--muted);font-size:14px}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;z-index:999}
+    .overlay.open{display:flex}
+    .sheet{width:min(96vw,480px);max-height:78vh;background:#24212a;color:#fff;border-radius:28px 28px 0 0;overflow:hidden}
+    .sheetHead{padding:14px 16px 10px}
+    .sheetTop{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+    .sheetTitle{font-size:18px;font-weight:800}
+    .closeBtn{background:transparent;border:0;color:#fff;font-size:24px;cursor:pointer}
+    .sheetSearch{display:flex;align-items:center;gap:10px;background:#35323d;border-radius:16px;padding:12px 14px}
+    .sheetSearch input{width:100%;background:transparent;border:0;outline:0;color:#fff;font-size:16px}
+    .countryList{max-height:60vh;overflow:auto}
+    .item{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-top:1px solid rgba(255,255,255,.08);cursor:pointer}
+    .left{display:flex;gap:14px;align-items:center}
+    .flag{font-size:28px}.name{font-size:18px}.code{opacity:.9}
+    .dot{width:28px;height:28px;border-radius:50%;border:3px solid #bfb6cc}
+    .dot.active{border-color:#c996ff;box-shadow:inset 0 0 0 6px #c996ff}
+    @media(max-width:380px){.row{flex-direction:column}.countryBtn{width:100%}}
   </style>
 </head>
 <body>
-  <div class="app">
-    <div class="topbar">
-      <div class="brand-badge">AMAROSE LIFESTYLE</div>
-      <div class="lang-switch">
-        <button class="active" onclick="setLang('en', this)">EN</button>
-        <button onclick="setLang('ru', this)">RU</button>
-        <button onclick="setLang('hy', this)">HY</button>
+<div class="app">
+  <div class="top">
+    <div>
+      <div class="brand">AMAROSE</div>
+      <div class="sub" id="sub"></div>
+      <div class="version">V3</div>
+    </div>
+    <div class="langs">
+      <button class="lang" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang" data-lang="ru" onclick="setLang('ru')">RU</button>
+      <button class="lang" data-lang="hy" onclick="setLang('hy')">HY</button>
+      <button class="lang" data-lang="es" onclick="setLang('es')">ES</button>
+      <button class="lang" data-lang="fr" onclick="setLang('fr')">FR</button>
+      <button class="lang" data-lang="de" onclick="setLang('de')">DE</button>
+    </div>
+  </div>  <section id="screen-login">
+    <div class="hero">
+      <p id="welcome"></p>
+      <h1 id="title"></h1>
+      <p id="text"></p>
+    </div>
+    <div class="card">
+      <label class="label" id="phone"></label>
+      <div class="row">
+        <button class="countryBtn" id="countryBtn" onclick="openPicker()"></button>
+        <input id="phoneInput" type="tel" placeholder="00 00 00 00" />
+      </div>
+      <button class="btn" id="continueBtn" onclick="goOtp()"></button>
+      <div class="info"><strong id="countryLabel"></strong>: <span id="countryValue"></span></div>
+      <div class="info" id="savedText"></div>
+    </div>
+  </section>  <section id="screen-otp" class="hidden">
+    <div class="hero">
+      <p id="otp"></p>
+      <h1 id="otp_title"></h1>
+      <p id="otp_text"></p>
+    </div>
+    <div class="card">
+      <div class="otp"><div>1</div><div>2</div><div>3</div><div>4</div></div>
+      <button class="btn" id="enterBtn" onclick="goBack()"></button>
+      <button class="btn soft" id="againBtn" onclick="goBack()"></button>
+    </div>
+  </section>
+</div><div class="overlay" id="overlay">
+  <div class="sheet">
+    <div class="sheetHead">
+      <div class="sheetTop">
+        <div class="sheetTitle" id="pickerTitle"></div>
+        <button class="closeBtn" onclick="closePicker()">×</button>
+      </div>
+      <div class="sheetSearch">
+        <span>🔎</span>
+        <input id="countrySearch" />
       </div>
     </div>
-
-    <div class="logo-block">
-      <h1>AMAROSE</h1>
-      <p id="brandSub">Owner & marketplace demo inside Telegram</p>
-    </div>
-
-    <section id="screen-home">
-      <div class="card">
-        <div class="pill" id="welcomeLabel">Welcome</div>
-        <div class="hero-title" id="homeTitle">Manage your boutique</div>
-        <p class="muted" id="homeText">Client storefront plus owner tools, products, sellers, and orders in one mini app.</p>
-        <button class="btn btn-primary" id="openCatalogBtn" onclick="showScreen('catalog')">Open Catalog</button>
-        <button class="btn btn-soft" id="openOwnerBtn" onclick="showScreen('owner')">Open Owner Panel</button>
-      </div>
-
-      <div class="section">
-        <div class="section-head">
-          <h3 id="quickTitle">Quick actions</h3>
-        </div>
-        <div class="grid-2">
-          <div class="tile" onclick="showScreen('owner')">
-            <div class="emoji">👑</div>
-            <div class="name" id="quick1">Owner Panel</div>
-          </div>
-          <div class="tile" onclick="showScreen('catalog')">
-            <div class="emoji">🛍️</div>
-            <div class="name" id="quick2">Catalog</div>
-          </div>
-          <div class="tile" onclick="showScreen('orders')">
-            <div class="emoji">📦</div>
-            <div class="name" id="quick3">Orders</div>
-          </div>
-          <div class="tile" onclick="showScreen('sellers')">
-            <div class="emoji">🤝</div>
-            <div class="name" id="quick4">Sellers</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="screen-catalog" class="hidden">
-      <div class="section-head">
-        <h3 id="catalogTitle">Catalog</h3>
-      </div>
-      <div class="grid-3">
-        <div class="tile"><div class="emoji">💄</div><div class="name" id="cat1">Beauty</div></div>
-        <div class="tile"><div class="emoji">👗</div><div class="name" id="cat2">Fashion</div></div>
-        <div class="tile"><div class="emoji">🎁</div><div class="name" id="cat3">Gifts</div></div>
-        <div class="tile"><div class="emoji">👜</div><div class="name" id="cat4">Bags</div></div>
-        <div class="tile"><div class="emoji">🏡</div><div class="name" id="cat5">Home</div></div>
-        <div class="tile"><div class="emoji">🌸</div><div class="name" id="cat6">Self Care</div></div>
-      </div>
-
-      <div class="section">
-        <div class="section-head">
-          <h3 id="featuredTitle">Featured</h3>
-        </div>
-        <div class="product-list">
-          <div class="product-card">
-            <div class="product-image">🌹</div>
-            <div class="product-body">
-              <div class="row">
-                <div>
-                  <div class="title" id="p1Title">Rose Glow Set</div>
-                  <div class="sub" id="pSub1">AMAROSE selection</div>
-                </div>
-                <div class="price">$29</div>
-              </div>
-              <button class="btn btn-soft" id="addToCart1" onclick="addToCart(current.p1Title)">Add to cart</button>
-            </div>
-          </div>
-
-          <div class="product-card">
-            <div class="product-image">👜</div>
-            <div class="product-body">
-              <div class="row">
-                <div>
-                  <div class="title" id="p2Title">Pink Elegance Bag</div>
-                  <div class="sub" id="pSub2">AMAROSE selection</div>
-                </div>
-                <div class="price">$59</div>
-              </div>
-              <button class="btn btn-soft" id="addToCart2" onclick="addToCart(current.p2Title)">Add to cart</button>
-            </div>
-          </div>
-
-          <div class="product-card">
-            <div class="product-image">🎁</div>
-            <div class="product-body">
-              <div class="row">
-                <div>
-                  <div class="title" id="p3Title">Luxury Gift Box</div>
-                  <div class="sub" id="pSub3">AMAROSE selection</div>
-                </div>
-                <div class="price">$39</div>
-              </div>
-              <button class="btn btn-soft" id="addToCart3" onclick="addToCart(current.p3Title)">Add to cart</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="screen-cart" class="hidden">
-      <div class="section-head">
-        <h3 id="cartTitle">Cart</h3>
-      </div>
-      <div class="panel-list" id="cartList">
-        <div class="panel-item">
-          <h4 id="cartEmptyTitle">Cart is empty</h4>
-          <p class="muted" id="cartEmptyText">Products added from catalog will appear here.</p>
-        </div>
-      </div>
-      <button class="btn btn-primary" id="checkoutBtn" onclick="openSupport()">Checkout in Telegram</button>
-    </section>
-
-    <section id="screen-support" class="hidden">
-      <div class="card">
-        <div class="pill" id="supportLabel">Support</div>
-        <div class="hero-title" id="supportTitle">Need help?</div>
-        <p class="muted" id="supportText">Contact AMAROSE directly in Telegram for questions, orders, and management requests.</p>
-        <button class="btn btn-primary" id="supportBtn" onclick="openSupport()">Contact in Telegram</button>
-      </div>
-    </section>
-
-    <section id="screen-owner" class="hidden">
-      <div class="section-head">
-        <h3 id="ownerTitle">Owner Panel</h3>
-      </div>
-
-      <div class="stats">
-        <div class="stat-box">
-          <div class="num">12</div>
-          <div id="stat1">Products</div>
-        </div>
-        <div class="stat-box">
-          <div class="num">3</div>
-          <div id="stat2">Sellers</div>
-        </div>
-        <div class="stat-box">
-          <div class="num">18</div>
-          <div id="stat3">Orders</div>
-        </div>
-        <div class="stat-box">
-          <div class="num">$940</div>
-          <div id="stat4">Revenue</div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="panel-list">
-          <div class="panel-item">
-            <h4 id="ownerBox1">Add Product</h4>
-            <p class="muted" id="ownerBox1Text">Create new items, prices, descriptions, and product cards.</p>
-            <button class="btn btn-soft" id="ownerBtn1" onclick="showScreen('add-product')">Open</button>
-          </div>
-          <div class="panel-item">
-            <h4 id="ownerBox2">Products</h4>
-            <p class="muted" id="ownerBox2Text">Manage visible products in your boutique.</p>
-            <button class="btn btn-soft" id="ownerBtn2" onclick="showScreen('products')">Open</button>
-          </div>
-          <div class="panel-item">
-            <h4 id="ownerBox3">Sellers</h4>
-            <p class="muted" id="ownerBox3Text">Connect sellers and assign access.</p>
-            <button class="btn btn-soft" id="ownerBtn3" onclick="showScreen('sellers')">Open</button>
-          </div>
-          <div class="panel-item">
-            <h4 id="ownerBox4">Orders</h4>
-            <p class="muted" id="ownerBox4Text">Track orders and customer requests.</p>
-            <button class="btn btn-soft" id="ownerBtn4" onclick="showScreen('orders')">Open</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="screen-add-product" class="hidden">
-      <div class="section-head">
-        <h3 id="addProductTitle">Add Product</h3>
-      </div>
-      <div class="panel-list">
-        <div class="panel-item">
-          <h4 id="field1">Product name</h4>
-          <p class="muted" id="field1Text">Demo field for the owner panel.</p>
-        </div>
-        <div class="panel-item">
-          <h4 id="field2">Price</h4>
-          <p class="muted" id="field2Text">Later we will connect real form saving.</p>
-        </div>
-        <div class="panel-item">
-          <h4 id="field3">Category</h4>
-          <p class="muted" id="field3Text">Beauty, Fashion, Gifts, Bags, Home, Self Care.</p>
-        </div>
-      </div>
-      <button class="btn btn-primary" id="saveProductBtn" onclick="showFakeSaved()">Save Product</button>
-    </section>
-
-    <section id="screen-products" class="hidden">
-      <div class="section-head">
-        <h3 id="productsTitle">Products</h3>
-      </div>
-      <div class="panel-list">
-        <div class="panel-item"><h4>Rose Glow Set</h4><p class="muted">$29 · Active</p></div>
-        <div class="panel-item"><h4>Pink Elegance Bag</h4><p class="muted">$59 · Active</p></div>
-        <div class="panel-item"><h4>Luxury Gift Box</h4><p class="muted">$39 · Draft</p></div>
-      </div>
-    </section>
-
-    <section id="screen-sellers" class="hidden">
-      <div class="section-head">
-        <h3 id="sellersTitle">Sellers</h3>
-      </div>
-      <div class="panel-list">
-        <div class="panel-item"><h4>Seller 1</h4><p class="muted" id="seller1">Beauty department · Active</p></div>
-        <div class="panel-item"><h4>Seller 2</h4><p class="muted" id="seller2">Fashion department · Active</p></div>
-        <div class="panel-item"><h4>Seller 3</h4><p class="muted" id="seller3">Gifts department · Pending</p></div>
-      </div>
-      <button class="btn btn-primary" id="inviteSellerBtn" onclick="openSupport()">Invite Seller</button>
-    </section>
-
-    <section id="screen-orders" class="hidden">
-      <div class="section-head">
-        <h3 id="ordersTitle">Orders</h3>
-      </div>
-      <div class="panel-list">
-        <div class="panel-item"><h4>#1001</h4><p class="muted" id="order1">Rose Glow Set · New</p></div>
-        <div class="panel-item"><h4>#1002</h4><p class="muted" id="order2">Pink Elegance Bag · Processing</p></div>
-        <div class="panel-item"><h4>#1003</h4><p class="muted" id="order3">Luxury Gift Box · Delivered</p></div>
-      </div>
-    </section>
+    <div class="countryList" id="countryList"></div>
   </div>
+</div><script>
+const texts = {
+  en:{sub:'client app starter',welcome:'Welcome',title:'Enter by phone number',text:'Choose your country code and continue with OTP login.',phone:'Phone number',pick:'Choose country',search:'Search country or code',continue:'Continue',otp:'Verification',otp_title:'Enter the code',otp_text:'We sent a confirmation code to your number.',enter:'Enter app',again:'Send code again',country_label:'Country code selected',saved:'State saved after refresh'},
+  ru:{sub:'клиентский app starter',welcome:'Добро пожаловать',title:'Вход по номеру телефона',text:'Выберите код страны и продолжайте вход по OTP.',phone:'Номер телефона',pick:'Выбрать страну',search:'Поиск страны или кода',continue:'Продолжить',otp:'Подтверждение',otp_title:'Введите код',otp_text:'Мы отправили код подтверждения на ваш номер.',enter:'Войти в приложение',again:'Отправить код ещё раз',country_label:'Выбранный код страны',saved:'Состояние сохраняется после обновления'},
+  hy:{sub:'client app starter',welcome:'Բարի գալուստ',title:'Մուտք հեռախոսահամարով',text:'Ընտրեք երկրի կոդը և շարունակեք OTP մուտքով։',phone:'Հեռախոսահամար',pick:'Ընտրել երկիրը',search:'Որոնել երկիր կամ կոդ',continue:'Շարունակել',otp:'Հաստատում',otp_title:'Մուտքագրեք կոդը',otp_text:'Մենք հաստատման կոդ ուղարկեցինք ձեր համարին։',enter:'Մտնել հավելված',again:'Կրկին ուղարկել կոդը',country_label:'Ընտրված երկրի կոդ',saved:'Վիճակը պահվում է թարմացումից հետո'},
+  es:{sub:'client app starter',welcome:'Bienvenido',title:'Entrar por número de teléfono',text:'Elija el código del país y continúe con el acceso OTP.',phone:'Número de teléfono',pick:'Elegir país',search:'Buscar país o código',continue:'Continuar',otp:'Verificación',otp_title:'Introduzca el código',otp_text:'Hemos enviado un código de confirmación a su número.',enter:'Entrar a la app',again:'Enviar código otra vez',country_label:'Código de país elegido',saved:'El estado se guarda después de actualizar'},
+  fr:{sub:'client app starter',welcome:'Bienvenue',title:'Entrer par numéro de téléphone',text:'Choisissez l’indicatif du pays et continuez avec OTP.',phone:'Numéro de téléphone',pick:'Choisir le pays',search:'Rechercher pays ou code',continue:'Continuer',otp:'Vérification',otp_title:'Entrez le code',otp_text:'Nous avons envoyé un code de confirmation à votre numéro.',enter:'Entrer dans l\'app',again:'Renvoyer le code',country_label:'Indicatif pays choisi',saved:'L’état est conservé après actualisation'},
+  de:{sub:'client app starter',welcome:'Willkommen',title:'Einstieg per Telefonnummer',text:'Wählen Sie die Ländervorwahl und fahren Sie mit OTP fort.',phone:'Telefonnummer',pick:'Land wählen',search:'Land oder Code suchen',continue:'Weiter',otp:'Bestätigung',otp_title:'Code eingeben',otp_text:'Wir haben einen Bestätigungscode an Ihre Nummer gesendet.',enter:'In die App',again:'Code erneut senden',country_label:'Gewählte Ländervorwahl',saved:'Der Status bleibt nach Aktualisierung erhalten'}
+};
 
-  <div class="bottom-nav">
-    <div class="bottom-nav-inner">
-      <div class="nav-item active" data-screen="home" onclick="showScreen('home', this)">
-        <div>🏠</div><div id="nav1">Home</div>
-      </div>
-      <div class="nav-item" data-screen="catalog" onclick="showScreen('catalog', this)">
-        <div>🛍️</div><div id="nav2">Shop</div>
-      </div>
-      <div class="nav-item" data-screen="cart" onclick="showScreen('cart', this)">
-        <div>🛒</div><div id="nav3">Cart</div>
-      </div>
-      <div class="nav-item" data-screen="support" onclick="showScreen('support', this)">
-        <div>💬</div><div id="nav4">Support</div>
-      </div>
-      <div class="nav-item" data-screen="owner" onclick="showScreen('owner', this)">
-        <div>👑</div><div id="nav5">Owner</div>
-      </div>
-    </div>
-  </div>
+const countries = [
+  {flag:'🇦🇲',name:'Armenia',code:'+374'},{flag:'🇷🇺',name:'Russia',code:'+7'},{flag:'🇳🇱',name:'Netherlands',code:'+31'},{flag:'🇫🇷',name:'France',code:'+33'},{flag:'🇩🇪',name:'Germany',code:'+49'},
+  {flag:'🇪🇸',name:'Spain',code:'+34'},{flag:'🇺🇸',name:'United States',code:'+1'},{flag:'🇨🇦',name:'Canada',code:'+1'},{flag:'🇬🇧',name:'United Kingdom',code:'+44'},{flag:'🇮🇹',name:'Italy',code:'+39'},
+  {flag:'🇵🇱',name:'Poland',code:'+48'},{flag:'🇧🇪',name:'Belgium',code:'+32'},{flag:'🇨🇭',name:'Switzerland',code:'+41'},{flag:'🇦🇹',name:'Austria',code:'+43'},{flag:'🇨🇿',name:'Czech Republic',code:'+420'},
+  {flag:'🇸🇰',name:'Slovakia',code:'+421'},{flag:'🇭🇺',name:'Hungary',code:'+36'},{flag:'🇷🇴',name:'Romania',code:'+40'},{flag:'🇧🇬',name:'Bulgaria',code:'+359'},{flag:'🇬🇷',name:'Greece',code:'+30'},
+  {flag:'🇸🇪',name:'Sweden',code:'+46'},{flag:'🇳🇴',name:'Norway',code:'+47'},{flag:'🇩🇰',name:'Denmark',code:'+45'},{flag:'🇫🇮',name:'Finland',code:'+358'},{flag:'🇮🇪',name:'Ireland',code:'+353'},
+  {flag:'🇵🇹',name:'Portugal',code:'+351'},{flag:'🇱🇹',name:'Lithuania',code:'+370'},{flag:'🇱🇻',name:'Latvia',code:'+371'},{flag:'🇪🇪',name:'Estonia',code:'+372'},{flag:'🇬🇪',name:'Georgia',code:'+995'},
+  {flag:'🇹🇷',name:'Turkey',code:'+90'},{flag:'🇦🇪',name:'United Arab Emirates',code:'+971'},{flag:'🇸🇦',name:'Saudi Arabia',code:'+966'},{flag:'🇶🇦',name:'Qatar',code:'+974'},{flag:'🇮🇱',name:'Israel',code:'+972'},
+  {flag:'🇪🇬',name:'Egypt',code:'+20'},{flag:'🇰🇿',name:'Kazakhstan',code:'+7'},{flag:'🇺🇿',name:'Uzbekistan',code:'+998'},{flag:'🇰🇬',name:'Kyrgyzstan',code:'+996'},{flag:'🇹🇯',name:'Tajikistan',code:'+992'},
+  {flag:'🇮🇳',name:'India',code:'+91'},{flag:'🇨🇳',name:'China',code:'+86'},{flag:'🇯🇵',name:'Japan',code:'+81'},{flag:'🇰🇷',name:'South Korea',code:'+82'},{flag:'🇧🇷',name:'Brazil',code:'+55'},
+  {flag:'🇦🇷',name:'Argentina',code:'+54'},{flag:'🇲🇽',name:'Mexico',code:'+52'},{flag:'🇦🇺',name:'Australia',code:'+61'},{flag:'🇳🇿',name:'New Zealand',code:'+64'}
+];
 
-  <script>
-    const dictionary = {
-      en: {
-        brandSub: "Owner & marketplace demo inside Telegram",
-        welcomeLabel: "Welcome",
-        homeTitle: "Manage your boutique",
-        homeText: "Client storefront plus owner tools, products, sellers, and orders in one mini app.",
-        openCatalogBtn: "Open Catalog",
-        openOwnerBtn: "Open Owner Panel",
-        quickTitle: "Quick actions",
-        quick1: "Owner Panel",
-        quick2: "Catalog",
-        quick3: "Orders",
-        quick4: "Sellers",
-        catalogTitle: "Catalog",
-        cat1: "Beauty", cat2: "Fashion", cat3: "Gifts", cat4: "Bags", cat5: "Home", cat6: "Self Care",
-        featuredTitle: "Featured",
-        p1Title: "Rose Glow Set",
-        p2Title: "Pink Elegance Bag",
-        p3Title: "Luxury Gift Box",
-        pSub: "AMAROSE selection",
-        addToCart: "Add to cart",
-        cartTitle: "Cart",
-        cartEmptyTitle: "Cart is empty",
-        cartEmptyText: "Products added from catalog will appear here.",
-        checkoutBtn: "Checkout in Telegram",
-        supportLabel: "Support",
-        supportTitle: "Need help?",
-        supportText: "Contact AMAROSE directly in Telegram for questions, orders, and management requests.",
-        supportBtn: "Contact in Telegram",
-        ownerTitle: "Owner Panel",
-        stat1: "Products", stat2: "Sellers", stat3: "Orders", stat4: "Revenue",
-        ownerBox1: "Add Product",
-        ownerBox1Text: "Create new items, prices, descriptions, and product cards.",
-        ownerBox2: "Products",
-        ownerBox2Text: "Manage visible products in your boutique.",
-        ownerBox3: "Sellers",
-        ownerBox3Text: "Connect sellers and assign access.",
-        ownerBox4: "Orders",
-        ownerBox4Text: "Track orders and customer requests.",
-        open: "Open",
-        addProductTitle: "Add Product",
-        field1: "Product name",
-        field1Text: "Demo field for the owner panel.",
-        field2: "Price",
-        field2Text: "Later we will connect real form saving.",
-        field3: "Category",
-        field3Text: "Beauty, Fashion, Gifts, Bags, Home, Self Care.",
-        saveProductBtn: "Save Product",
-        productsTitle: "Products",
-        sellersTitle: "Sellers",
-        seller1: "Beauty department · Active",
-        seller2: "Fashion department · Active",
-        seller3: "Gifts department · Pending",
-        inviteSellerBtn: "Invite Seller",
-        ordersTitle: "Orders",
-        order1: "Rose Glow Set · New",
-        order2: "Pink Elegance Bag · Processing",
-        order3: "Luxury Gift Box · Delivered",
-        nav1: "Home", nav2: "Shop", nav3: "Cart", nav4: "Support", nav5: "Owner"
-      },
-      ru: {
-        brandSub: "Демо владельца и магазина внутри Telegram",
-        welcomeLabel: "Добро пожаловать",
-        homeTitle: "Управляй своим бутиком",
-        homeText: "Клиентская витрина плюс инструменты владельца, товары, продавцы и заказы в одном mini app.",
-        openCatalogBtn: "Открыть каталог",
-        openOwnerBtn: "Открыть Owner Panel",
-        quickTitle: "Быстрые действия",
-        quick1: "Owner Panel",
-        quick2: "Каталог",
-        quick3: "Заказы",
-        quick4: "Продавцы",
-        catalogTitle: "Каталог",
-        cat1: "Красота", cat2: "Мода", cat3: "Подарки", cat4: "Сумки", cat5: "Дом", cat6: "Уход",
-        featuredTitle: "Избранное",
-        p1Title: "Набор Rose Glow",
-        p2Title: "Сумка Pink Elegance",
-        p3Title: "Подарочный Luxury Box",
-        pSub: "Выбор AMAROSE",
-        addToCart: "В корзину",
-        cartTitle: "Корзина",
-        cartEmptyTitle: "Корзина пустая",
-        cartEmptyText: "Товары из каталога появятся здесь.",
-        checkoutBtn: "Оформить в Telegram",
-        supportLabel: "Поддержка",
-        supportTitle: "Нужна помощь?",
-        supportText: "Свяжитесь с AMAROSE напрямую в Telegram по вопросам, заказам и управлению.",
-        supportBtn: "Связаться в Telegram",
-        ownerTitle: "Owner Panel",
-        stat1: "Товары", stat2: "Продавцы", stat3: "Заказы", stat4: "Выручка",
-        ownerBox1: "Добавить товар",
-        ownerBox1Text: "Создавайте новые товары, цены, описания и карточки.",
-        ownerBox2: "Товары",
-        ownerBox2Text: "Управляйте товарами, видимыми в бутике.",
-        ownerBox3: "Продавцы",
-        ownerBox3Text: "Подключайте продавцов и выдавайте доступ.",
-        ownerBox4: "Заказы",
-        ownerBox4Text: "Отслеживайте заказы и запросы клиентов.",
-        open: "Открыть",
-        addProductTitle: "Добавить товар",
-        field1: "Название товара",
-        field1Text: "Демо-поле для панели владельца.",
-        field2: "Цена",
-        field2Text: "Позже подключим настоящее сохранение формы.",
-        field3: "Категория",
-        field3Text: "Красота, Мода, Подарки, Сумки, Дом, Уход.",
-        saveProductBtn: "Сохранить товар",
-        productsTitle: "Товары",
-        sellersTitle: "Продавцы",
-        seller1: "Отдел красоты · Активен",
-        seller2: "Отдел моды · Активен",
-        seller3: "Отдел подарков · Ожидает",
-        inviteSellerBtn: "Пригласить продавца",
-        ordersTitle: "Заказы",
-        order1: "Набор Rose Glow · Новый",
-        order2: "Сумка Pink Elegance · В обработке",
-        order3: "Подарочный Luxury Box · Доставлен",
-        nav1: "Главная", nav2: "Магазин", nav3: "Корзина", nav4: "Поддержка", nav5: "Владелец"
-      },
-      hy: {
-        brandSub: "Վաճառքի և owner demo Telegram-ի ներսում",
-        welcomeLabel: "Բարի գալուստ",
-        homeTitle: "Կառավարիր քո բուտիկը",
-        homeText: "Հաճախորդի վիտրինան և owner գործիքները, ապրանքները, վաճառողները և պատվերները մեկ mini app-ում։",
-        openCatalogBtn: "Բացել կատալոգը",
-        openOwnerBtn: "Բացել Owner Panel",
-        quickTitle: "Արագ գործողություններ",
-        quick1: "Owner Panel",
-        quick2: "Կատալոգ",
-        quick3: "Պատվերներ",
-        quick4: "Վաճառողներ",
-        catalogTitle: "Կատալոգ",
-        cat1: "Գեղեցկություն", cat2: "Նորաձևություն", cat3: "Նվերներ", cat4: "Պայուսակներ", cat5: "Տուն", cat6: "Խնամք",
-        featuredTitle: "Ընտրված",
-        p1Title: "Rose Glow հավաքածու",
-        p2Title: "Pink Elegance պայուսակ",
-        p3Title: "Luxury Gift Box",
-        pSub: "AMAROSE ընտրանի",
-        addToCart: "Ավելացնել զամբյուղ",
-        cartTitle: "Զամբյուղ",
-        cartEmptyTitle: "Զամբյուղը դատարկ է",
-        cartEmptyText: "Կատալոգից ավելացված ապրանքները կհայտնվեն այստեղ։",
-        checkoutBtn: "Պատվիրել Telegram-ով",
-        supportLabel: "Աջակցություն",
-        supportTitle: "Օգնությո՞ւն է պետք",
-        supportText: "Կապվիր AMAROSE-ի հետ Telegram-ում հարցերի, պատվերների և կառավարման համար։",
-        supportBtn: "Կապ Telegram-ում",
-        ownerTitle: "Owner Panel",
-        stat1: "Ապրանքներ", stat2: "Վաճառողներ", stat3: "Պատվերներ", stat4: "Եկամուտ",
-        ownerBox1: "Ավելացնել ապրանք",
-        ownerBox1Text: "Ստեղծիր նոր ապրանքներ, գներ, նկարագրություններ և քարտեր։",
-        ownerBox2: "Ապրանքներ",
-        ownerBox2Text: "Կառավարիր քո բուտիկի տեսանելի ապրանքները։",
-        ownerBox3: "Վաճառողներ",
-        ownerBox3Text: "Միացրու վաճառողներին և տուր հասանելիություն։",
-        ownerBox4: "Պատվերներ",
-        ownerBox4Text: "Հետևիր պատվերներին և հաճախորդների հարցումներին։",
-        open: "Բացել",
-        addProductTitle: "Ավելացնել ապրանք",
-        field1: "Ապրանքի անուն",
-        field1Text: "Demo դաշտ owner panel-ի համար։",
-        field2: "Գին",
-        field2Text: "Հետո կմիանա իրական պահպանումը։",
-        field3: "Բաժին",
-        field3Text: "Գեղեցկություն, Նորաձևություն, Նվերներ, Պայուսակներ, Տուն, Խնամք։",
-        saveProductBtn: "Պահպանել ապրանքը",
-        productsTitle: "Ապրանքներ",
-        sellersTitle: "Վաճառողներ",
-        seller1: "Գեղեցկության բաժին · Ակտիվ",
-        seller2: "Նորաձևության բաժին · Ակտիվ",
-        seller3: "Նվերների բաժին · Սպասման մեջ",
-        inviteSellerBtn: "Հրավիրել վաճառող",
-        ordersTitle: "Պատվերներ",
-        order1: "Rose Glow հավաքածու · Նոր",
-        order2: "Pink Elegance պայուսակ · Մշակման մեջ",
-        order3: "Luxury Gift Box · Առաքված",
-        nav1: "Գլխավոր", nav2: "Խանութ", nav3: "Զամբյուղ", nav4: "Աջակցություն", nav5: "Owner"
-      }
-    };
+const KEY = 'amarose_client_v3';
+let state = { lang:'ru', screen:'login', country:countries[0], phone:'' };
 
-    let current = dictionary.en;
-    let cartItems = [];
+function saveState(){
+  try{
+    state.phone = document.getElementById('phoneInput') ? document.getElementById('phoneInput').value : state.phone;
+    localStorage.setItem(KEY, JSON.stringify(state));
+  }catch(e){}
+}
+function loadState(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(raw){ state = Object.assign(state, JSON.parse(raw)); }
+  }catch(e){}
+}
+function t(){ return texts[state.lang] || texts.en; }
+function setLang(lang){ state.lang = lang; apply(); saveState(); }
+function markLangs(){ document.querySelectorAll('[data-lang]').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === state.lang)); }
+function apply(){
+  const d = t();
+  document.getElementById('sub').textContent = d.sub;
+  document.getElementById('welcome').textContent = d.welcome;
+  document.getElementById('title').textContent = d.title;
+  document.getElementById('text').textContent = d.text;
+  document.getElementById('phone').textContent = d.phone;
+  document.getElementById('continueBtn').textContent = d.continue;
+  document.getElementById('otp').textContent = d.otp;
+  document.getElementById('otp_title').textContent = d.otp_title;
+  document.getElementById('otp_text').textContent = d.otp_text;
+  document.getElementById('enterBtn').textContent = d.enter;
+  document.getElementById('againBtn').textContent = d.again;
+  document.getElementById('countryLabel').textContent = d.country_label;
+  document.getElementById('savedText').textContent = d.saved;
+  document.getElementById('countrySearch').placeholder = d.search;
+  document.getElementById('pickerTitle').textContent = d.pick;
+  document.getElementById('countryBtn').textContent = `${state.country.flag} ${state.country.name} ${state.country.code}`;
+  document.getElementById('countryValue').textContent = `${state.country.flag} ${state.country.name} ${state.country.code}`;
+  document.getElementById('phoneInput').value = state.phone || '';
+  markLangs();
+}
+function showOnly(id){
+  document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+  document.getElementById('screen-' + id).classList.remove('hidden');
+  state.screen = id;
+  saveState();
+}
+function goOtp(){ showOnly('otp'); }
+function goBack(){ showOnly('login'); }
+function openPicker(){
+  document.getElementById('overlay').classList.add('open');
+  renderCountries(document.getElementById('countrySearch').value || '');
+}
+function closePicker(){ document.getElementById('overlay').classList.remove('open'); }
+function renderCountries(q){
+  const query = (q || '').toLowerCase().trim();
+  const list = document.getElementById('countryList');
+  list.innerHTML = '';
+  countries.filter(c => !query || c.name.toLowerCase().includes(query) || c.code.includes(query)).forEach(c => {
+    const active = state.country && state.country.name === c.name && state.country.code === c.code;
+    const row = document.createElement('div');
+    row.className = 'item';
+    row.innerHTML = `<div class="left"><div class="flag">${c.flag}</div><div><div class="name">${c.name}</div><div class="code">${c.code}</div></div></div><div class="dot ${active ? 'active' : ''}"></div>`;
+    row.onclick = () => { state.country = c; apply(); saveState(); closePicker(); };
+    list.appendChild(row);
+  });
+}
 
-    function showScreen(name, el = null) {
-      const screens = [
-        'home','catalog','cart','support','owner','add-product','products','sellers','orders'
-      ];
-      screens.forEach(id => {
-        document.getElementById('screen-' + id).classList.add('hidden');
-      });
-      document.getElementById('screen-' + name).classList.remove('hidden');
-
-      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-      const navMatch = document.querySelector('.nav-item[data-screen="' + (name === 'add-product' || name === 'products' || name === 'sellers' || name === 'orders' ? 'owner' : name) + '"]');
-      if (navMatch) navMatch.classList.add('active');
-    }
-
-    function addToCart(item) {
-      cartItems.push(item);
-      renderCart();
-      showScreen('cart');
-    }
-
-    function renderCart() {
-      const cartList = document.getElementById('cartList');
-      if (cartItems.length === 0) {
-        cartList.innerHTML = `
-          <div class="panel-item">
-            <h4 id="cartEmptyTitle">${current.cartEmptyTitle}</h4>
-            <p class="muted" id="cartEmptyText">${current.cartEmptyText}</p>
-          </div>
-        `;
-        return;
-      }
-
-      cartList.innerHTML = cartItems.map((item, i) => `
-        <div class="panel-item">
-          <h4>${item}</h4>
-          <p class="muted">Item ${i + 1}</p>
-        </div>
-      `).join('');
-    }
-
-    function openSupport() {
-      window.open("https://t.me/amaroselifestyle_bot", "_blank");
-    }
-
-    function showFakeSaved() {
-      alert("Saved. Later we will connect real database saving.");
-    }
-
-    function applyLang(lang) {
-      current = dictionary[lang];
-
-      setText('brandSub', current.brandSub);
-      setText('welcomeLabel', current.welcomeLabel);
-      setText('homeTitle', current.homeTitle);
-      setText('homeText', current.homeText);
-      setText('openCatalogBtn', current.openCatalogBtn);
-      setText('openOwnerBtn', current.openOwnerBtn);
-      setText('quickTitle', current.quickTitle);
-      setText('quick1', current.quick1);
-      setText('quick2', current.quick2);
-      setText('quick3', current.quick3);
-      setText('quick4', current.quick4);
-      setText('catalogTitle', current.catalogTitle);
-      setText('cat1', current.cat1);
-      setText('cat2', current.cat2);
-      setText('cat3', current.cat3);
-      setText('cat4', current.cat4);
-      setText('cat5', current.cat5);
-      setText('cat6', current.cat6);
-      setText('featuredTitle', current.featuredTitle);
-      setText('p1Title', current.p1Title);
-      setText('p2Title', current.p2Title);
-      setText('p3Title', current.p3Title);
-      setText('pSub1', current.pSub);
-      setText('pSub2', current.pSub);
-      setText('pSub3', current.pSub);
-      setText('addToCart1', current.addToCart);
-      setText('addToCart2', current.addToCart);
-      setText('addToCart3', current.addToCart);
-      setText('cartTitle', current.cartTitle);
-      setText('checkoutBtn', current.checkoutBtn);
-      setText('supportLabel', current.supportLabel);
-      setText('supportTitle', current.supportTitle);
-      setText('supportText', current.supportText);
-      setText('supportBtn', current.supportBtn);
-      setText('ownerTitle', current.ownerTitle);
-      setText('stat1', current.stat1);
-      setText('stat2', current.stat2);
-      setText('stat3', current.stat3);
-      setText('stat4', current.stat4);
-      setText('ownerBox1', current.ownerBox1);
-      setText('ownerBox1Text', current.ownerBox1Text);
-      setText('ownerBox2', current.ownerBox2);
-      setText('ownerBox2Text', current.ownerBox2Text);
-      setText('ownerBox3', current.ownerBox3);
-      setText('ownerBox3Text', current.ownerBox3Text);
-      setText('ownerBox4', current.ownerBox4);
-      setText('ownerBox4Text', current.ownerBox4Text);
-      setText('ownerBtn1', current.open);
-      setText('ownerBtn2', current.open);
-      setText('ownerBtn3', current.open);
-      setText('ownerBtn4', current.open);
-      setText('addProductTitle', current.addProductTitle);
-      setText('field1', current.field1);
-      setText('field1Text', current.field1Text);
-      setText('field2', current.field2);
-      setText('field2Text', current.field2Text);
-      setText('field3', current.field3);
-      setText('field3Text', current.field3Text);
-      setText('saveProductBtn', current.saveProductBtn);
-      setText('productsTitle', current.productsTitle);
-      setText('sellersTitle', current.sellersTitle);
-      setText('seller1', current.seller1);
-      setText('seller2', current.seller2);
-      setText('seller3', current.seller3);
-      setText('inviteSellerBtn', current.inviteSellerBtn);
-      setText('ordersTitle', current.ordersTitle);
-      setText('order1', current.order1);
-      setText('order2', current.order2);
-      setText('order3', current.order3);
-      setText('nav1', current.nav1);
-      setText('nav2', current.nav2);
-      setText('nav3', current.nav3);
-      setText('nav4', current.nav4);
-      setText('nav5', current.nav5);
-
-      renderCart();
-    }
-
-    function setText(id, value) {
-      const el = document.getElementById(id);
-      if (el) el.innerText = value;
-    }
-
-    function setLang(lang, btn) {
-      document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      applyLang(lang);
-    }
-
-    applyLang('en');
-    showScreen('home');
-
-    if (window.Telegram && window.Telegram.WebApp) {
-      window.Telegram.WebApp.ready();
-      window.Telegram.WebApp.expand();
-    }
-  </script>
-</body>
-</html>
+loadState();
+if(!state.country) state.country = countries[0];
+apply();
+showOnly(state.screen === 'otp' ? 'otp' : 'login');
+document.getElementById('phoneInput').addEventListener('input', saveState);
+document.getElementById('countrySearch').addEventListener('input', e => renderCountries(e.target.value));
+document.getElementById('overlay').addEventListener('click', e => { if(e.target.id === 'overlay') closePicker(); });
+</script></body>
+        </html>
