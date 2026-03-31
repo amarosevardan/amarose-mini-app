@@ -2,209 +2,194 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AMAROSE Client Starter v3</title>
+  <title>AMAROSE V5 TEST</title>
   <style>
-    :root{
-      --brand:#7e173b; --brand2:#a42f5b; --gold:#b8893d;
-      --line:#ead7dd; --text:#24181d; --muted:#7d6771;
-      --shadow:0 10px 24px rgba(80,20,40,.08);
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#fff8fa 0%,#f8f4f5 50%,#f6f1f2 100%);color:var(--text)}
-    .app{max-width:480px;margin:0 auto;min-height:100vh;padding:14px 14px 96px}
-    .hidden{display:none!important}
-    .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}
-    .brand{font-family:Georgia,serif;font-size:30px;color:var(--gold)}
-    .sub{font-size:11px;font-weight:800;color:var(--brand);letter-spacing:.18em;text-transform:uppercase;margin-top:3px}
-    .version{font-size:10px;font-weight:800;color:#7e173b;letter-spacing:.18em;margin-top:4px}
-    .langs{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-    .lang{border:1px solid var(--line);background:#fff;border-radius:14px;padding:8px 10px;font-weight:800;font-size:12px;cursor:pointer}
-    .lang.active{background:var(--brand);color:#fff;border-color:var(--brand)}
-    .hero{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-radius:26px;padding:18px;box-shadow:0 14px 30px rgba(95,20,48,.22);margin-bottom:14px}
+    body{margin:0;font-family:Arial,sans-serif;background:#faf6f7;color:#23181d}
+    .app{max-width:430px;margin:0 auto;padding:16px 16px 90px}
+    .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .brand{font-size:30px;font-family:Georgia,serif;color:#b8893d}
+    .mini{font-size:10px;font-weight:700;color:#7e173b;letter-spacing:.18em}
+    .langs{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+    .lang{border:1px solid #e7d4db;background:#fff;border-radius:12px;padding:7px 9px;font-size:12px;font-weight:700}
+    .active{background:#7e173b;color:#fff}
+    .hero{margin-top:14px;background:linear-gradient(135deg,#7e173b,#a42f5b);color:#fff;border-radius:24px;padding:18px}
     .hero h1{font-size:28px;line-height:1.08;margin:4px 0 8px}
-    .hero p{margin:0;color:rgba(255,255,255,.86)}
-    .card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:var(--shadow)}
-    .label{display:block;font-size:13px;font-weight:800;color:#6e5963;margin-bottom:7px}
-    .row{display:flex;gap:10px;align-items:center}
-    .countryBtn{min-width:170px;border:1px solid var(--line);background:#fff;border-radius:18px;padding:14px 12px;font-size:16px;text-align:left;cursor:pointer;box-shadow:var(--shadow)}
-    input{width:100%;border:1px solid var(--line);background:#fff;border-radius:18px;padding:14px;font-size:16px;color:var(--text);outline:none}
-    .btn{width:100%;border:0;border-radius:18px;padding:14px 16px;background:linear-gradient(90deg,var(--brand),var(--brand2));color:#fff;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 10px 20px rgba(126,23,59,.20);margin-top:14px}
-    .btn.soft{background:#fff8fb;color:var(--brand);border:1px solid var(--line)}
+    .card{margin-top:14px;background:#fff;border:1px solid #ead7dd;border-radius:22px;padding:16px}
+    .label{display:block;font-size:13px;font-weight:700;margin-bottom:8px;color:#6f5d63}
+    .row{display:flex;gap:10px}
+    .country{min-width:150px;border:1px solid #ead7dd;background:#fff;border-radius:16px;padding:14px 12px}
+    .phone{flex:1;border:1px solid #ead7dd;border-radius:16px;padding:14px 12px;font-size:16px}
+    .btn{width:100%;margin-top:14px;border:0;border-radius:16px;padding:14px;background:#7e173b;color:#fff;font-size:16px;font-weight:700}
+    .soft{background:#fff;color:#7e173b;border:1px solid #ead7dd}
     .otp{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
-    .otp div{border:1px solid var(--line);border-radius:16px;background:#fff;text-align:center;padding:16px 0;font-size:28px;font-weight:900;color:var(--text)}
-    .info{margin-top:14px;color:var(--muted);font-size:14px}
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;z-index:999}
-    .overlay.open{display:flex}
-    .sheet{width:min(96vw,480px);max-height:78vh;background:#24212a;color:#fff;border-radius:28px 28px 0 0;overflow:hidden}
-    .sheetHead{padding:14px 16px 10px}
-    .sheetTop{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
-    .sheetTitle{font-size:18px;font-weight:800}
-    .closeBtn{background:transparent;border:0;color:#fff;font-size:24px;cursor:pointer}
-    .sheetSearch{display:flex;align-items:center;gap:10px;background:#35323d;border-radius:16px;padding:12px 14px}
-    .sheetSearch input{width:100%;background:transparent;border:0;outline:0;color:#fff;font-size:16px}
-    .countryList{max-height:60vh;overflow:auto}
-    .item{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-top:1px solid rgba(255,255,255,.08);cursor:pointer}
-    .left{display:flex;gap:14px;align-items:center}
-    .flag{font-size:28px}.name{font-size:18px}.code{opacity:.9}
-    .dot{width:28px;height:28px;border-radius:50%;border:3px solid #bfb6cc}
-    .dot.active{border-color:#c996ff;box-shadow:inset 0 0 0 6px #c996ff}
-    @media(max-width:380px){.row{flex-direction:column}.countryBtn{width:100%}}
+    .otp div{background:#fff;border:1px solid #ead7dd;border-radius:16px;padding:16px 0;text-align:center;font-size:28px;font-weight:800}
+    .hidden{display:none}
+    .status{margin-top:12px;padding:10px 12px;border-radius:14px;background:#f7eef2;color:#7e173b;font-weight:700}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center}
+    .overlay.show{display:flex}
+    .sheet{width:min(96vw,430px);max-height:75vh;background:#24212a;color:#fff;border-radius:24px 24px 0 0;overflow:hidden}
+    .sheetTop{padding:14px}
+    .search{width:100%;border:0;outline:0;background:#36323f;color:#fff;border-radius:14px;padding:12px 14px;font-size:16px}
+    .list{max-height:58vh;overflow:auto}
+    .item{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-top:1px solid rgba(255,255,255,.08)}
+    .left{display:flex;gap:12px;align-items:center}.flag{font-size:26px}.dot{width:24px;height:24px;border-radius:50%;border:3px solid #bcb2c7}.dot.on{border-color:#cb9cff;box-shadow:inset 0 0 0 5px #cb9cff}
   </style>
 </head>
 <body>
-<div class="app">
-  <div class="top">
-    <div>
-      <div class="brand">AMAROSE</div>
-      <div class="sub" id="sub"></div>
-      <div class="version">V3</div>
-    </div>
-    <div class="langs">
-      <button class="lang" data-lang="en" onclick="setLang('en')">EN</button>
-      <button class="lang" data-lang="ru" onclick="setLang('ru')">RU</button>
-      <button class="lang" data-lang="hy" onclick="setLang('hy')">HY</button>
-      <button class="lang" data-lang="es" onclick="setLang('es')">ES</button>
-      <button class="lang" data-lang="fr" onclick="setLang('fr')">FR</button>
-      <button class="lang" data-lang="de" onclick="setLang('de')">DE</button>
-    </div>
-  </div>  <section id="screen-login">
-    <div class="hero">
-      <p id="welcome"></p>
-      <h1 id="title"></h1>
-      <p id="text"></p>
-    </div>
-    <div class="card">
-      <label class="label" id="phone"></label>
-      <div class="row">
-        <button class="countryBtn" id="countryBtn" onclick="openPicker()"></button>
-        <input id="phoneInput" type="tel" placeholder="00 00 00 00" />
+  <div class="app">
+    <div class="top">
+      <div>
+        <div class="brand">AMAROSE</div>
+        <div class="mini">V5 TEST SIMPLE</div>
       </div>
-      <button class="btn" id="continueBtn" onclick="goOtp()"></button>
-      <div class="info"><strong id="countryLabel"></strong>: <span id="countryValue"></span></div>
-      <div class="info" id="savedText"></div>
-    </div>
-  </section>  <section id="screen-otp" class="hidden">
-    <div class="hero">
-      <p id="otp"></p>
-      <h1 id="otp_title"></h1>
-      <p id="otp_text"></p>
-    </div>
-    <div class="card">
-      <div class="otp"><div>1</div><div>2</div><div>3</div><div>4</div></div>
-      <button class="btn" id="enterBtn" onclick="goBack()"></button>
-      <button class="btn soft" id="againBtn" onclick="goBack()"></button>
-    </div>
-  </section>
-</div><div class="overlay" id="overlay">
-  <div class="sheet">
-    <div class="sheetHead">
-      <div class="sheetTop">
-        <div class="sheetTitle" id="pickerTitle"></div>
-        <button class="closeBtn" onclick="closePicker()">×</button>
+      <div class="langs">
+        <button type="button" class="lang" data-lang="en">EN</button>
+        <button type="button" class="lang" data-lang="ru">RU</button>
+        <button type="button" class="lang" data-lang="hy">HY</button>
+        <button type="button" class="lang" data-lang="es">ES</button>
+        <button type="button" class="lang" data-lang="fr">FR</button>
+        <button type="button" class="lang" data-lang="de">DE</button>
       </div>
-      <div class="sheetSearch">
-        <span>🔎</span>
-        <input id="countrySearch" />
-      </div>
-    </div>
-    <div class="countryList" id="countryList"></div>
+    </div><section id="loginScreen">
+  <div class="hero">
+    <div id="welcomeText">Добро пожаловать</div>
+    <h1 id="titleText">Вход по номеру телефона</h1>
+    <div id="descText">Выберите код страны и нажмите продолжить.</div>
   </div>
-</div><script>
-const texts = {
-  en:{sub:'client app starter',welcome:'Welcome',title:'Enter by phone number',text:'Choose your country code and continue with OTP login.',phone:'Phone number',pick:'Choose country',search:'Search country or code',continue:'Continue',otp:'Verification',otp_title:'Enter the code',otp_text:'We sent a confirmation code to your number.',enter:'Enter app',again:'Send code again',country_label:'Country code selected',saved:'State saved after refresh'},
-  ru:{sub:'клиентский app starter',welcome:'Добро пожаловать',title:'Вход по номеру телефона',text:'Выберите код страны и продолжайте вход по OTP.',phone:'Номер телефона',pick:'Выбрать страну',search:'Поиск страны или кода',continue:'Продолжить',otp:'Подтверждение',otp_title:'Введите код',otp_text:'Мы отправили код подтверждения на ваш номер.',enter:'Войти в приложение',again:'Отправить код ещё раз',country_label:'Выбранный код страны',saved:'Состояние сохраняется после обновления'},
-  hy:{sub:'client app starter',welcome:'Բարի գալուստ',title:'Մուտք հեռախոսահամարով',text:'Ընտրեք երկրի կոդը և շարունակեք OTP մուտքով։',phone:'Հեռախոսահամար',pick:'Ընտրել երկիրը',search:'Որոնել երկիր կամ կոդ',continue:'Շարունակել',otp:'Հաստատում',otp_title:'Մուտքագրեք կոդը',otp_text:'Մենք հաստատման կոդ ուղարկեցինք ձեր համարին։',enter:'Մտնել հավելված',again:'Կրկին ուղարկել կոդը',country_label:'Ընտրված երկրի կոդ',saved:'Վիճակը պահվում է թարմացումից հետո'},
-  es:{sub:'client app starter',welcome:'Bienvenido',title:'Entrar por número de teléfono',text:'Elija el código del país y continúe con el acceso OTP.',phone:'Número de teléfono',pick:'Elegir país',search:'Buscar país o código',continue:'Continuar',otp:'Verificación',otp_title:'Introduzca el código',otp_text:'Hemos enviado un código de confirmación a su número.',enter:'Entrar a la app',again:'Enviar código otra vez',country_label:'Código de país elegido',saved:'El estado se guarda después de actualizar'},
-  fr:{sub:'client app starter',welcome:'Bienvenue',title:'Entrer par numéro de téléphone',text:'Choisissez l’indicatif du pays et continuez avec OTP.',phone:'Numéro de téléphone',pick:'Choisir le pays',search:'Rechercher pays ou code',continue:'Continuer',otp:'Vérification',otp_title:'Entrez le code',otp_text:'Nous avons envoyé un code de confirmation à votre numéro.',enter:'Entrer dans l\'app',again:'Renvoyer le code',country_label:'Indicatif pays choisi',saved:'L’état est conservé après actualisation'},
-  de:{sub:'client app starter',welcome:'Willkommen',title:'Einstieg per Telefonnummer',text:'Wählen Sie die Ländervorwahl und fahren Sie mit OTP fort.',phone:'Telefonnummer',pick:'Land wählen',search:'Land oder Code suchen',continue:'Weiter',otp:'Bestätigung',otp_title:'Code eingeben',otp_text:'Wir haben einen Bestätigungscode an Ihre Nummer gesendet.',enter:'In die App',again:'Code erneut senden',country_label:'Gewählte Ländervorwahl',saved:'Der Status bleibt nach Aktualisierung erhalten'}
-};
+  <div class="card">
+    <label class="label" id="phoneLabel">Номер телефона</label>
+    <div class="row">
+      <button type="button" class="country" id="countryBtn">🇦🇲 Armenia +374</button>
+      <input class="phone" id="phoneInput" type="tel" placeholder="00 00 00 00" />
+    </div>
+    <button type="button" class="btn" id="continueBtn">Продолжить</button>
+    <div class="status" id="statusBox">READY</div>
+  </div>
+</section>
 
-const countries = [
-  {flag:'🇦🇲',name:'Armenia',code:'+374'},{flag:'🇷🇺',name:'Russia',code:'+7'},{flag:'🇳🇱',name:'Netherlands',code:'+31'},{flag:'🇫🇷',name:'France',code:'+33'},{flag:'🇩🇪',name:'Germany',code:'+49'},
-  {flag:'🇪🇸',name:'Spain',code:'+34'},{flag:'🇺🇸',name:'United States',code:'+1'},{flag:'🇨🇦',name:'Canada',code:'+1'},{flag:'🇬🇧',name:'United Kingdom',code:'+44'},{flag:'🇮🇹',name:'Italy',code:'+39'},
-  {flag:'🇵🇱',name:'Poland',code:'+48'},{flag:'🇧🇪',name:'Belgium',code:'+32'},{flag:'🇨🇭',name:'Switzerland',code:'+41'},{flag:'🇦🇹',name:'Austria',code:'+43'},{flag:'🇨🇿',name:'Czech Republic',code:'+420'},
-  {flag:'🇸🇰',name:'Slovakia',code:'+421'},{flag:'🇭🇺',name:'Hungary',code:'+36'},{flag:'🇷🇴',name:'Romania',code:'+40'},{flag:'🇧🇬',name:'Bulgaria',code:'+359'},{flag:'🇬🇷',name:'Greece',code:'+30'},
-  {flag:'🇸🇪',name:'Sweden',code:'+46'},{flag:'🇳🇴',name:'Norway',code:'+47'},{flag:'🇩🇰',name:'Denmark',code:'+45'},{flag:'🇫🇮',name:'Finland',code:'+358'},{flag:'🇮🇪',name:'Ireland',code:'+353'},
-  {flag:'🇵🇹',name:'Portugal',code:'+351'},{flag:'🇱🇹',name:'Lithuania',code:'+370'},{flag:'🇱🇻',name:'Latvia',code:'+371'},{flag:'🇪🇪',name:'Estonia',code:'+372'},{flag:'🇬🇪',name:'Georgia',code:'+995'},
-  {flag:'🇹🇷',name:'Turkey',code:'+90'},{flag:'🇦🇪',name:'United Arab Emirates',code:'+971'},{flag:'🇸🇦',name:'Saudi Arabia',code:'+966'},{flag:'🇶🇦',name:'Qatar',code:'+974'},{flag:'🇮🇱',name:'Israel',code:'+972'},
-  {flag:'🇪🇬',name:'Egypt',code:'+20'},{flag:'🇰🇿',name:'Kazakhstan',code:'+7'},{flag:'🇺🇿',name:'Uzbekistan',code:'+998'},{flag:'🇰🇬',name:'Kyrgyzstan',code:'+996'},{flag:'🇹🇯',name:'Tajikistan',code:'+992'},
-  {flag:'🇮🇳',name:'India',code:'+91'},{flag:'🇨🇳',name:'China',code:'+86'},{flag:'🇯🇵',name:'Japan',code:'+81'},{flag:'🇰🇷',name:'South Korea',code:'+82'},{flag:'🇧🇷',name:'Brazil',code:'+55'},
-  {flag:'🇦🇷',name:'Argentina',code:'+54'},{flag:'🇲🇽',name:'Mexico',code:'+52'},{flag:'🇦🇺',name:'Australia',code:'+61'},{flag:'🇳🇿',name:'New Zealand',code:'+64'}
-];
+<section id="otpScreen" class="hidden">
+  <div class="hero">
+    <div id="otpLabel">Подтверждение</div>
+    <h1 id="otpTitle">Введите код</h1>
+    <div id="otpDesc">Мы отправили код на ваш номер.</div>
+  </div>
+  <div class="card">
+    <div class="otp"><div>1</div><div>2</div><div>3</div><div>4</div></div>
+    <button type="button" class="btn" id="backBtn">Назад</button>
+  </div>
+</section>
 
-const KEY = 'amarose_client_v3';
-let state = { lang:'ru', screen:'login', country:countries[0], phone:'' };
+  </div>  <div class="overlay" id="pickerOverlay">
+    <div class="sheet">
+      <div class="sheetTop">
+        <input id="countrySearch" class="search" placeholder="Поиск страны или кода" />
+      </div>
+      <div id="countryList" class="list"></div>
+    </div>
+  </div>  <script>
+    const texts = {
+      en:{welcome:'Welcome',title:'Enter by phone number',desc:'Choose your country code and press continue.',phone:'Phone number',continue:'Continue',otpLabel:'Verification',otpTitle:'Enter the code',otpDesc:'We sent a code to your number.',back:'Back',search:'Search country or code'},
+      ru:{welcome:'Добро пожаловать',title:'Вход по номеру телефона',desc:'Выберите код страны и нажмите продолжить.',phone:'Номер телефона',continue:'Продолжить',otpLabel:'Подтверждение',otpTitle:'Введите код',otpDesc:'Мы отправили код на ваш номер.',back:'Назад',search:'Поиск страны или кода'},
+      hy:{welcome:'Բարի գալուստ',title:'Մուտք հեռախոսահամարով',desc:'Ընտրեք երկրի կոդը և սեղմեք շարունակել։',phone:'Հեռախոսահամար',continue:'Շարունակել',otpLabel:'Հաստատում',otpTitle:'Մուտքագրեք կոդը',otpDesc:'Մենք ուղարկել ենք կոդը ձեր համարին։',back:'Հետ',search:'Որոնել երկիր կամ կոդ'},
+      es:{welcome:'Bienvenido',title:'Entrar por número de teléfono',desc:'Elija el código del país y pulse continuar.',phone:'Número de teléfono',continue:'Continuar',otpLabel:'Verificación',otpTitle:'Introduzca el código',otpDesc:'Hemos enviado un código a su número.',back:'Atrás',search:'Buscar país o código'},
+      fr:{welcome:'Bienvenue',title:'Entrer par numéro de téléphone',desc:'Choisissez l’indicatif et appuyez sur continuer.',phone:'Numéro de téléphone',continue:'Continuer',otpLabel:'Vérification',otpTitle:'Entrez le code',otpDesc:'Nous avons envoyé un code à votre numéro.',back:'Retour',search:'Rechercher pays ou code'},
+      de:{welcome:'Willkommen',title:'Einstieg per Telefonnummer',desc:'Wählen Sie die Vorwahl und drücken Sie weiter.',phone:'Telefonnummer',continue:'Weiter',otpLabel:'Bestätigung',otpTitle:'Code eingeben',otpDesc:'Wir haben einen Code an Ihre Nummer gesendet.',back:'Zurück',search:'Land oder Code suchen'}
+    };
 
-function saveState(){
-  try{
-    state.phone = document.getElementById('phoneInput') ? document.getElementById('phoneInput').value : state.phone;
-    localStorage.setItem(KEY, JSON.stringify(state));
-  }catch(e){}
-}
-function loadState(){
-  try{
-    const raw = localStorage.getItem(KEY);
-    if(raw){ state = Object.assign(state, JSON.parse(raw)); }
-  }catch(e){}
-}
-function t(){ return texts[state.lang] || texts.en; }
-function setLang(lang){ state.lang = lang; apply(); saveState(); }
-function markLangs(){ document.querySelectorAll('[data-lang]').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === state.lang)); }
-function apply(){
-  const d = t();
-  document.getElementById('sub').textContent = d.sub;
-  document.getElementById('welcome').textContent = d.welcome;
-  document.getElementById('title').textContent = d.title;
-  document.getElementById('text').textContent = d.text;
-  document.getElementById('phone').textContent = d.phone;
-  document.getElementById('continueBtn').textContent = d.continue;
-  document.getElementById('otp').textContent = d.otp;
-  document.getElementById('otp_title').textContent = d.otp_title;
-  document.getElementById('otp_text').textContent = d.otp_text;
-  document.getElementById('enterBtn').textContent = d.enter;
-  document.getElementById('againBtn').textContent = d.again;
-  document.getElementById('countryLabel').textContent = d.country_label;
-  document.getElementById('savedText').textContent = d.saved;
-  document.getElementById('countrySearch').placeholder = d.search;
-  document.getElementById('pickerTitle').textContent = d.pick;
-  document.getElementById('countryBtn').textContent = `${state.country.flag} ${state.country.name} ${state.country.code}`;
-  document.getElementById('countryValue').textContent = `${state.country.flag} ${state.country.name} ${state.country.code}`;
-  document.getElementById('phoneInput').value = state.phone || '';
-  markLangs();
-}
-function showOnly(id){
-  document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-  document.getElementById('screen-' + id).classList.remove('hidden');
-  state.screen = id;
-  saveState();
-}
-function goOtp(){ showOnly('otp'); }
-function goBack(){ showOnly('login'); }
-function openPicker(){
-  document.getElementById('overlay').classList.add('open');
-  renderCountries(document.getElementById('countrySearch').value || '');
-}
-function closePicker(){ document.getElementById('overlay').classList.remove('open'); }
-function renderCountries(q){
-  const query = (q || '').toLowerCase().trim();
-  const list = document.getElementById('countryList');
-  list.innerHTML = '';
-  countries.filter(c => !query || c.name.toLowerCase().includes(query) || c.code.includes(query)).forEach(c => {
-    const active = state.country && state.country.name === c.name && state.country.code === c.code;
-    const row = document.createElement('div');
-    row.className = 'item';
-    row.innerHTML = `<div class="left"><div class="flag">${c.flag}</div><div><div class="name">${c.name}</div><div class="code">${c.code}</div></div></div><div class="dot ${active ? 'active' : ''}"></div>`;
-    row.onclick = () => { state.country = c; apply(); saveState(); closePicker(); };
-    list.appendChild(row);
-  });
-}
+    const countries = [
+      {flag:'🇦🇲',name:'Armenia',code:'+374'},{flag:'🇷🇺',name:'Russia',code:'+7'},{flag:'🇳🇱',name:'Netherlands',code:'+31'},{flag:'🇫🇷',name:'France',code:'+33'},{flag:'🇩🇪',name:'Germany',code:'+49'},
+      {flag:'🇪🇸',name:'Spain',code:'+34'},{flag:'🇺🇸',name:'United States',code:'+1'},{flag:'🇨🇦',name:'Canada',code:'+1'},{flag:'🇬🇧',name:'United Kingdom',code:'+44'},{flag:'🇮🇹',name:'Italy',code:'+39'},
+      {flag:'🇵🇱',name:'Poland',code:'+48'},{flag:'🇦🇪',name:'United Arab Emirates',code:'+971'},{flag:'🇮🇳',name:'India',code:'+91'},{flag:'🇨🇳',name:'China',code:'+86'},{flag:'🇯🇵',name:'Japan',code:'+81'}
+    ];
 
-loadState();
-if(!state.country) state.country = countries[0];
-apply();
-showOnly(state.screen === 'otp' ? 'otp' : 'login');
-document.getElementById('phoneInput').addEventListener('input', saveState);
-document.getElementById('countrySearch').addEventListener('input', e => renderCountries(e.target.value));
-document.getElementById('overlay').addEventListener('click', e => { if(e.target.id === 'overlay') closePicker(); });
-</script></body>
-        </html>
+    let state = { lang:'ru', country:countries[0] };
+
+    const els = {
+      loginScreen: document.getElementById('loginScreen'),
+      otpScreen: document.getElementById('otpScreen'),
+      countryBtn: document.getElementById('countryBtn'),
+      continueBtn: document.getElementById('continueBtn'),
+      backBtn: document.getElementById('backBtn'),
+      pickerOverlay: document.getElementById('pickerOverlay'),
+      countryList: document.getElementById('countryList'),
+      countrySearch: document.getElementById('countrySearch'),
+      statusBox: document.getElementById('statusBox')
+    };
+
+    function applyLang(){
+      const t = texts[state.lang];
+      document.getElementById('welcomeText').textContent = t.welcome;
+      document.getElementById('titleText').textContent = t.title;
+      document.getElementById('descText').textContent = t.desc;
+      document.getElementById('phoneLabel').textContent = t.phone;
+      document.getElementById('continueBtn').textContent = t.continue;
+      document.getElementById('otpLabel').textContent = t.otpLabel;
+      document.getElementById('otpTitle').textContent = t.otpTitle;
+      document.getElementById('otpDesc').textContent = t.otpDesc;
+      document.getElementById('backBtn').textContent = t.back;
+      document.getElementById('countrySearch').placeholder = t.search;
+      document.querySelectorAll('.lang').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === state.lang));
+      els.countryBtn.textContent = `${state.country.flag} ${state.country.name} ${state.country.code}`;
+    }
+
+    function show(screen){
+      els.loginScreen.classList.toggle('hidden', screen !== 'login');
+      els.otpScreen.classList.toggle('hidden', screen !== 'otp');
+      els.statusBox.textContent = 'SCREEN: ' + screen.toUpperCase();
+    }
+
+    function renderCountries(query=''){
+      const q = query.toLowerCase().trim();
+      els.countryList.innerHTML = '';
+      countries.filter(c => !q || c.name.toLowerCase().includes(q) || c.code.includes(q)).forEach(c => {
+        const row = document.createElement('div');
+        const active = state.country.name === c.name && state.country.code === c.code;
+        row.className = 'item';
+        row.innerHTML = `<div class="left"><div class="flag">${c.flag}</div><div><div class="name">${c.name}</div><div class="code">${c.code}</div></div></div><div class="dot ${active ? 'on' : ''}"></div>`;
+        row.addEventListener('click', function(){
+          state.country = c;
+          applyLang();
+          els.pickerOverlay.classList.remove('show');
+          els.statusBox.textContent = 'COUNTRY: ' + c.name;
+        });
+        els.countryList.appendChild(row);
+      });
+    }
+
+    document.querySelectorAll('.lang').forEach(btn => {
+      btn.addEventListener('click', function(){
+        state.lang = btn.dataset.lang;
+        applyLang();
+        els.statusBox.textContent = 'LANG: ' + state.lang.toUpperCase();
+      });
+    });
+
+    els.countryBtn.addEventListener('click', function(){
+      els.pickerOverlay.classList.add('show');
+      renderCountries(els.countrySearch.value || '');
+      els.statusBox.textContent = 'PICKER OPEN';
+    });
+
+    els.continueBtn.addEventListener('click', function(){
+      show('otp');
+    });
+
+    els.backBtn.addEventListener('click', function(){
+      show('login');
+    });
+
+    els.countrySearch.addEventListener('input', function(e){
+      renderCountries(e.target.value);
+    });
+
+    els.pickerOverlay.addEventListener('click', function(e){
+      if(e.target === els.pickerOverlay){
+        els.pickerOverlay.classList.remove('show');
+        els.statusBox.textContent = 'PICKER CLOSED';
+      }
+    });
+
+    applyLang();
+    show('login');
+  </script></body>
+</html>
